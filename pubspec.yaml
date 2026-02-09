@@ -1,0 +1,62 @@
+name: kumi_app
+description: A Very Good Project created by Very Good CLI.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ^3.10.0
+  flutter: ^3.38.1
+
+dependencies:
+  # Local packages
+  kumi_data_sources:
+    path: packages/kumi_data_sources
+  kumi_repository:
+    path: packages/kumi_repository
+  
+  # State Management
+  bloc: ^9.2.0
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  flutter_localizations:
+    sdk: flutter
+  equatable: ^2.0.8
+  
+  # Internationalization
+  intl: ^0.20.2
+  
+  # Database & Local Storage
+  sqlite3: ^3.1.4
+  path_provider: ^2.1.0
+  path: ^1.9.0
+  
+  # AI & LLM
+  llama_cpp_dart: ^0.2.2
+  langchain: ^0.8.1
+  http: ^1.2.0
+  
+  # UI & Design
+  google_fonts: ^8.0.1
+  flutter_animate: ^4.5.2
+  lucide_icons: ^0.257.0
+  lottie: ^3.1.0
+  fl_chart: ^0.69.0
+  
+  # Utilities
+  uuid: ^4.5.2
+
+dev_dependencies:
+  bloc_lint: ">=0.3.3 <0.3.6"
+  bloc_test: ^10.0.0
+  bloc_tools: ^0.1.0-dev.20
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.4
+  very_good_analysis: ^10.1.0
+
+flutter:
+  generate: true
+  uses-material-design: true
+  assets:
+    - assets/animations/

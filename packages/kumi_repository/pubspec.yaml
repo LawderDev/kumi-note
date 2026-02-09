@@ -1,0 +1,21 @@
+name: kumi_repository
+description: Repository layer for Kumi Chat RAG with business logic orchestration.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  # Data sources
+  kumi_data_sources:
+    path: ../kumi_data_sources
+  
+  # Utilities
+  equatable: ^2.0.8
+  uuid: ^4.5.2
+
+dev_dependencies:
+  test: ^1.24.0
+  mocktail: ^1.0.4
+  very_good_analysis: ^10.1.0

@@ -1,0 +1,30 @@
+name: kumi_data_sources
+description: Data sources, models and services for Kumi Chat RAG feature.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  # Database & Local Storage
+  sqlite3: ^3.1.4
+  path_provider: ^2.1.0
+  path: ^1.9.0
+  
+  # AI & LLM
+  llama_cpp_dart: ^0.2.2
+  
+  # Utilities
+  uuid: ^4.5.2
+  equatable: ^2.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  test: ^1.24.0
+  mocktail: ^1.0.4
+  very_good_analysis: ^10.1.0
+
+flutter:
+  generate: false

@@ -29,7 +29,7 @@ dependencies:
   lucide_icons: ^0.257.0
   path: ^1.9.0
   path_provider: ^2.1.0
-  tflite_flutter: ^0.11.0
+  tflite_flutter: ^0.12.1
   uuid: ^4.5.2
 
 dev_dependencies:

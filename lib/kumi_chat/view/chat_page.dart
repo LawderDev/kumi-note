@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kumi_note/kumi_chat/bloc/bloc.dart';
@@ -11,14 +13,26 @@ import 'package:kumi_note/kumi_chat/view/widgets/widgets.dart';
 /// - List of chat messages with proper styling
 /// - Input field for user messages
 /// - Real-time response streaming
-class ChatPage extends StatefulWidget {
+///
+/// ChatCubit is provided at the app level via MultiBlocProvider,
+/// so no need to create it here.
+class ChatPage extends StatelessWidget {
   const ChatPage({super.key});
 
   @override
-  State<ChatPage> createState() => _ChatPageState();
+  Widget build(BuildContext context) {
+    return const _ChatPageContent();
+  }
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatPageContent extends StatefulWidget {
+  const _ChatPageContent();
+
+  @override
+  State<_ChatPageContent> createState() => _ChatPageContentState();
+}
+
+class _ChatPageContentState extends State<_ChatPageContent> {
   late TextEditingController _messageController;
   late ScrollController _scrollController;
 
@@ -46,10 +60,12 @@ class _ChatPageState extends State<ChatPage> {
           // Auto-scroll to the latest message when new messages arrive
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (_scrollController.hasClients) {
-              _scrollController.animateTo(
-                _scrollController.position.maxScrollExtent,
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeOut,
+              unawaited(
+                _scrollController.animateTo(
+                  _scrollController.position.maxScrollExtent,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOut,
+                ),
               );
             }
           });
@@ -141,12 +157,12 @@ class _ChatPageState extends State<ChatPage> {
           const KumiMascot(state: MascotState.idle, size: 80),
           const SizedBox(height: KumiTheme.spacingL),
           Text(
-            'Hey! I\'m Kumi 🐕',
+            "Hey! I'm Kumi 🐕",
             style: KumiTheme.titleStyle,
           ),
           const SizedBox(height: KumiTheme.spacingS),
           Text(
-            'Start a conversation with me.\nI\'ll remember everything!',
+            "Start a conversation with me.\nI'll remember everything!",
             style: KumiTheme.bodyStyle.copyWith(
               color: KumiTheme.disabledGray,
             ),
@@ -163,12 +179,11 @@ class _ChatPageState extends State<ChatPage> {
 
     return Container(
       padding: const EdgeInsets.all(KumiTheme.spacingM),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: KumiTheme.cream,
         border: Border(
           top: BorderSide(
             color: KumiTheme.lightGray,
-            width: 1,
           ),
         ),
       ),
@@ -181,7 +196,6 @@ class _ChatPageState extends State<ChatPage> {
                 color: Colors.white,
                 border: Border.all(
                   color: KumiTheme.lightGray,
-                  width: 1,
                 ),
                 borderRadius: KumiTheme.largeRadius,
               ),
@@ -227,7 +241,7 @@ class _ChatPageState extends State<ChatPage> {
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
                           valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.white.withOpacity(0.5),
+                            Colors.white.withValues(alpha: 0.5),
                           ),
                         ),
                       )
@@ -250,11 +264,12 @@ class _ChatPageState extends State<ChatPage> {
     if (text.isEmpty) return;
 
     _messageController.clear();
-    context.read<ChatCubit>().sendMessage(text);
+    unawaited(context.read<ChatCubit>().askQuestion(text));
   }
 
   /// Shows a confirmation dialog before clearing chat history
   Future<void> _showClearConfirmation(BuildContext context) async {
+    final cubit = context.read<ChatCubit>();
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -269,7 +284,9 @@ class _ChatPageState extends State<ChatPage> {
             onPressed: () => Navigator.pop(context, false),
             child: Text(
               'Cancel',
-              style: KumiTheme.buttonStyle.copyWith(color: KumiTheme.anthraciteGray),
+              style: KumiTheme.buttonStyle.copyWith(
+                color: KumiTheme.anthraciteGray,
+              ),
             ),
           ),
           TextButton(
@@ -280,8 +297,8 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
 
-    if (confirmed == true && mounted) {
-      context.read<ChatCubit>().clearHistory();
+    if ((confirmed ?? false) && mounted) {
+      unawaited(cubit.clearHistory());
     }
   }
 

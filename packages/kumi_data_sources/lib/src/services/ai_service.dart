@@ -13,13 +13,12 @@ import 'package:kumi_data_sources/src/config/ollama_config.dart';
 /// - Streaming text generation via llama3.2:1b
 /// - Health checks and error handling with retries
 class AiService {
-  AiService._internal() : _modelLoaded = false, _httpClient = http.Client();
-
-  static final AiService _instance = AiService._internal();
-
   factory AiService() {
     return _instance;
   }
+  AiService._internal() : _modelLoaded = false, _httpClient = http.Client();
+
+  static final AiService _instance = AiService._internal();
 
   bool _modelLoaded;
   final http.Client _httpClient;
@@ -52,7 +51,7 @@ class AiService {
       }
 
       _modelLoaded = true;
-    } catch (e) {
+    } on Exception catch (e) {
       throw AiServiceException('Failed to initialize Ollama: $e');
     }
   }
@@ -72,7 +71,7 @@ class AiService {
       return [];
     }
 
-    return await _retryOperation(
+    return _retryOperation(
       () async {
         final response = await _httpClient
             .post(
@@ -154,7 +153,8 @@ class AiService {
 
           try {
             final json = jsonDecode(line) as Map<String, dynamic>;
-            final content = json['message']?['content'] as String?;
+            final message = json['message'] as Map<String, dynamic>?;
+            final content = message?['content'] as String?;
             if (content != null && content.isNotEmpty) {
               yield content;
             }
@@ -163,7 +163,7 @@ class AiService {
             if (json['done'] == true) {
               return;
             }
-          } catch (e) {
+          } on Exception catch (_) {
             // Skip malformed JSON lines
             continue;
           }
@@ -178,7 +178,7 @@ class AiService {
       throw AiServiceException(
         'Ollama request timed out. The model might be loading.',
       );
-    } catch (e) {
+    } on Exception catch (e) {
       throw AiServiceException('Failed to stream response: $e');
     }
   }
@@ -193,7 +193,7 @@ class AiService {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
         final models = (data['models'] as List? ?? [])
-            .map((m) => m['name'] as String)
+            .map((m) => (m as Map<String, dynamic>)['name'] as String)
             .toList();
 
         return {
@@ -207,7 +207,7 @@ class AiService {
       return {'isAvailable': false, 'models': <String>[]};
     } on TimeoutException {
       return {'isAvailable': false, 'models': <String>[]};
-    } catch (e) {
+    } on Exception catch (_) {
       return {'isAvailable': false, 'models': <String>[]};
     }
   }
@@ -217,10 +217,10 @@ class AiService {
     Future<T> Function() operation, {
     required String operationName,
   }) async {
-    for (int attempt = 0; attempt <= OllamaConfig.maxRetries; attempt++) {
+    for (var attempt = 0; attempt <= OllamaConfig.maxRetries; attempt++) {
       try {
         return await operation();
-      } catch (e) {
+      } on Exception catch (_) {
         if (attempt == OllamaConfig.maxRetries) {
           rethrow;
         }

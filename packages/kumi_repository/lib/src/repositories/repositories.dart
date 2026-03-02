@@ -1,4 +1,4 @@
 /// Repositories orchestrating RAG logic.
-library repositories;
+library;
 
 export 'kumi_repository.dart';

@@ -1,4 +1,4 @@
 /// Chat Bloc for managing chat state and events.
-library bloc;
+library;
 
 export 'chat_cubit.dart';

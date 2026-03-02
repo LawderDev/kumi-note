@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:kumi_data_sources/kumi_data_sources.dart';
 import 'package:kumi_note/kumi_chat/view/theme/kumi_theme.dart';
-import 'package:kumi_note/kumi_chat/view/widgets/source_chip.dart';
 
 /// Widget for displaying a single chat message.
 ///
@@ -26,7 +25,9 @@ class ChatBubble extends StatelessWidget {
         vertical: KumiTheme.spacingS,
       ),
       child: Align(
-        alignment: message.isUser ? Alignment.centerRight : Alignment.centerLeft,
+        alignment: message.isUser
+            ? Alignment.centerRight
+            : Alignment.centerLeft,
         child: Column(
           crossAxisAlignment: message.isUser
               ? CrossAxisAlignment.end
@@ -34,46 +35,54 @@ class ChatBubble extends StatelessWidget {
           children: [
             // Main message bubble
             Container(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.75,
-              ),
-              decoration: BoxDecoration(
-                color: message.isUser ? KumiTheme.orange : KumiTheme.cream,
-                border: !message.isUser
-                    ? Border.all(color: KumiTheme.lightGray, width: 1)
-                    : null,
-                borderRadius: KumiTheme.mediumRadius,
-                boxShadow: [KumiTheme.subtleShadow],
-              ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: KumiTheme.spacingM,
-                vertical: KumiTheme.spacingS,
-              ),
-              child: Text(
-                message.text,
-                style: KumiTheme.chatMessageStyle.copyWith(
-                  color: message.isUser ? Colors.white : KumiTheme.anthraciteGray,
+                  constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width * 0.75,
+                  ),
+                  decoration: BoxDecoration(
+                    color: message.isUser ? KumiTheme.orange : KumiTheme.cream,
+                    border: !message.isUser
+                        ? Border.all(color: KumiTheme.lightGray)
+                        : null,
+                    borderRadius: KumiTheme.mediumRadius,
+                    boxShadow: const [KumiTheme.subtleShadow],
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: KumiTheme.spacingM,
+                    vertical: KumiTheme.spacingS,
+                  ),
+                  child: Text(
+                    message.text,
+                    style: KumiTheme.chatMessageStyle.copyWith(
+                      color: message.isUser
+                          ? Colors.white
+                          : KumiTheme.anthraciteGray,
+                    ),
+                  ),
+                )
+                .animate()
+                .fadeIn(duration: const Duration(milliseconds: 300))
+                .slideY(
+                  begin: 0.2,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOut,
                 ),
-              ),
-            ).animate().fadeIn(duration: const Duration(milliseconds: 300)).slideY(
-              begin: 0.2,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut,
-            ),
 
-            // Source chips for Kumi responses
-            if (!message.isUser && message.sources.isNotEmpty)
+            // Source note IDs indicator (for Kumi responses)
+            // Note: Full source display with repository lookup would be
+            // implemented when we have proper DI in place. For now,
+            // showing that sources exist.
+            if (!message.isUser && message.sourceNoteIds.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(
                   top: KumiTheme.spacingS,
                   left: KumiTheme.spacingS,
                 ),
-                child: Wrap(
-                  spacing: KumiTheme.spacingXS,
-                  children: [
-                    for (final source in message.sources)
-                      SourceChip(note: source),
-                  ],
+                child: Text(
+                  'Sources: ${message.sourceNoteIds.join(', ')}',
+                  style: KumiTheme.smallStyle.copyWith(
+                    color: KumiTheme.disabledGray,
+                    fontStyle: FontStyle.italic,
+                  ),
                 ),
               ),
 
@@ -95,6 +104,7 @@ class ChatBubble extends StatelessWidget {
 
   /// Formats a timestamp into a short time string
   String _formatTime(DateTime time) {
-    return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+    return '${time.hour.toString().padLeft(2, '0')}:'
+        '${time.minute.toString().padLeft(2, '0')}';
   }
 }

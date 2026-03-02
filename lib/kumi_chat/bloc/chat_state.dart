@@ -6,7 +6,7 @@ sealed class ChatState extends Equatable {
     required this.messages,
   });
 
-  /// All messages in the current chat session.
+  /// All messages in the current chat session (from database).
   final List<ChatMessageModel> messages;
 
   @override
@@ -20,10 +20,17 @@ final class ChatInitial extends ChatState {
   });
 }
 
+/// State when chat has been loaded from database.
+final class ChatLoaded extends ChatState {
+  const ChatLoaded({
+    required super.messages,
+  });
+}
+
 /// State when Kumi is thinking/processing the response.
 final class ChatLoading extends ChatState {
   const ChatLoading({
-    super.messages = const [],
+    required super.messages,
   });
 }
 
@@ -31,14 +38,36 @@ final class ChatLoading extends ChatState {
 final class ChatStreaming extends ChatState {
   const ChatStreaming({
     required super.messages,
+    required this.partialResponse,
+    this.sourceNoteIds = const [],
   });
+
+  /// The partial response being streamed (accumulated tokens).
+  final String partialResponse;
+
+  /// Note IDs that were used as sources for this response.
+  final List<int> sourceNoteIds;
+
+  @override
+  List<Object?> get props => [messages, partialResponse, sourceNoteIds];
 }
 
 /// State when a message exchange has completed successfully.
 final class ChatSuccess extends ChatState {
   const ChatSuccess({
     required super.messages,
+    required this.lastResponse,
+    this.sourceNoteIds = const [],
   });
+
+  /// The completed response from Kumi.
+  final String lastResponse;
+
+  /// Note IDs that were used as sources for this response.
+  final List<int> sourceNoteIds;
+
+  @override
+  List<Object?> get props => [messages, lastResponse, sourceNoteIds];
 }
 
 /// State when an error occurred during message processing.

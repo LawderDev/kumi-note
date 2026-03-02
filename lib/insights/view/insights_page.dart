@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,9 +19,13 @@ class InsightsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => InsightsCubit(
-        repository: context.read<KumiRepository>(),
-      )..loadStats(),
+      create: (context) {
+        final cubit = InsightsCubit(
+          repository: context.read<KumiRepository>(),
+        );
+        unawaited(cubit.loadStats());
+        return cubit;
+      },
       child: Scaffold(
         backgroundColor: KumiColors.creamBackground,
         appBar: AppBar(
@@ -106,7 +112,7 @@ class InsightsPage extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   LucideIcons.clock,
                                   size: 20,
                                   color: KumiColors.info,
@@ -188,7 +194,7 @@ class InsightsPage extends StatelessWidget {
                       color: KumiColors.sageGreen.withValues(alpha: 0.1),
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             LucideIcons.lightbulb,
                             color: KumiColors.sageGreen,
                             size: 24,
@@ -196,7 +202,8 @@ class InsightsPage extends StatelessWidget {
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              'Plus tu écris de notes, meilleure sera la mémoire de Kumi! 🐕',
+                              'Plus tu écris de notes, meilleure sera la '
+                              'mémoire de Kumi! 🐕',
                               style: KumiTextStyles.bodyM.copyWith(
                                 color: KumiColors.textPrimary,
                               ),
@@ -245,7 +252,7 @@ class InsightsPage extends StatelessWidget {
     }
 
     final spots = <FlSpot>[];
-    for (int i = 0; i < sortedEntries.length; i++) {
+    for (var i = 0; i < sortedEntries.length; i++) {
       spots.add(FlSpot(i.toDouble(), sortedEntries[i].value.toDouble()));
     }
 
@@ -257,7 +264,6 @@ class InsightsPage extends StatelessWidget {
     return LineChart(
       LineChartData(
         gridData: FlGridData(
-          show: true,
           drawVerticalLine: false,
           horizontalInterval: 1,
           getDrawingHorizontalLine: (value) {
@@ -268,7 +274,6 @@ class InsightsPage extends StatelessWidget {
           },
         ),
         titlesData: FlTitlesData(
-          show: true,
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
@@ -304,12 +309,8 @@ class InsightsPage extends StatelessWidget {
               },
             ),
           ),
-          topTitles: const AxisTitles(
-            sideTitles: SideTitles(showTitles: false),
-          ),
-          rightTitles: const AxisTitles(
-            sideTitles: SideTitles(showTitles: false),
-          ),
+          topTitles: const AxisTitles(),
+          rightTitles: const AxisTitles(),
         ),
         borderData: FlBorderData(show: false),
         minX: 0,
@@ -324,7 +325,6 @@ class InsightsPage extends StatelessWidget {
             barWidth: 3,
             isStrokeCapRound: true,
             dotData: FlDotData(
-              show: true,
               getDotPainter: (spot, percent, barData, index) {
                 return FlDotCirclePainter(
                   radius: 4,

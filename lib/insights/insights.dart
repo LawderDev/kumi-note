@@ -1,5 +1,5 @@
 /// Insights feature - Analytics and statistics
-library insights;
+library;
 
 export 'cubit/insights_cubit.dart';
 export 'cubit/insights_state.dart';

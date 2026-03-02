@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 /// Kumi Chat theme definition.
-/// 
-/// Defines all colors, typography, and design tokens for the Kumi Chat interface.
+///
+/// Defines all colors, typography, and design tokens for the
+/// Kumi Chat interface.
 class KumiTheme {
   // Private constructor to prevent instantiation
   KumiTheme._();
 
   // ============ Colors ============
-  
+
   /// Cream color - main background color
   /// #FFFDF5 - Warm, friendly, and easy on the eyes
   static const Color cream = Color(0xFFFFFDF5);
@@ -86,7 +87,9 @@ class KumiTheme {
   static const BorderRadius smallRadius = BorderRadius.all(Radius.circular(4));
 
   /// Medium border radius (12dp) - used for chat bubbles
-  static const BorderRadius mediumRadius = BorderRadius.all(Radius.circular(12));
+  static const BorderRadius mediumRadius = BorderRadius.all(
+    Radius.circular(12),
+  );
 
   /// Large border radius (24dp) - used for main containers
   static const BorderRadius largeRadius = BorderRadius.all(Radius.circular(24));

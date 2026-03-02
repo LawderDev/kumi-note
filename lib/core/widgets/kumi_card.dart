@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme/kumi_colors.dart';
+import 'package:kumi_note/core/theme/kumi_colors.dart';
 
 /// Reusable Kumi-styled card with high border radius
 class KumiCard extends StatelessWidget {

@@ -5,8 +5,8 @@ import 'package:kumi_repository/kumi_repository.dart';
 /// Cubit for managing Insights state
 class InsightsCubit extends Cubit<InsightsState> {
   InsightsCubit({required KumiRepository repository})
-      : _repository = repository,
-        super(const InsightsLoading());
+    : _repository = repository,
+      super(const InsightsLoading());
 
   final KumiRepository _repository;
 
@@ -26,7 +26,7 @@ class InsightsCubit extends Cubit<InsightsState> {
           notesLast7Days: stats['notesLast7Days'] as Map<DateTime, int>,
         ),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       emit(InsightsError('Impossible de charger les statistiques: $e'));
     }
   }

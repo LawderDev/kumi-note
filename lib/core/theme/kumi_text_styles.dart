@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'kumi_colors.dart';
+
+import 'package:kumi_note/core/theme/kumi_colors.dart';
 
 /// Kumi typography system using Plus Jakarta Sans
 class KumiTextStyles {
@@ -53,5 +54,26 @@ class KumiTextStyles {
     fontWeight: FontWeight.w400,
     color: KumiColors.textSecondary,
     height: 1.5,
+  );
+
+  static final TextStyle labelL = GoogleFonts.plusJakartaSans(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: KumiColors.textPrimary,
+    height: 1.4,
+  );
+
+  static final TextStyle labelM = GoogleFonts.plusJakartaSans(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: KumiColors.textPrimary,
+    height: 1.4,
+  );
+
+  static final TextStyle labelS = GoogleFonts.plusJakartaSans(
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+    color: KumiColors.textPrimary,
+    height: 1.4,
   );
 }

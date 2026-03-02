@@ -31,12 +31,12 @@ final class InsightsLoaded extends InsightsState {
 
   @override
   List<Object?> get props => [
-        totalNotes,
-        avgNotesPerDay,
-        oldestNote,
-        newestNote,
-        notesLast7Days,
-      ];
+    totalNotes,
+    avgNotesPerDay,
+    oldestNote,
+    newestNote,
+    notesLast7Days,
+  ];
 }
 
 /// Error loading stats

@@ -1,4 +1,4 @@
 /// Theme for Kumi Chat UI
-library theme;
+library;
 
 export 'kumi_theme.dart';

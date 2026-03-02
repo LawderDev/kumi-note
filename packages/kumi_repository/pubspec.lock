@@ -138,7 +138,7 @@ packages:
     source: hosted
     version: "1.1.1"
   flutter:
-    dependency: transitive
+    dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -166,6 +166,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
+  http:
+    dependency: transitive
+    description:
+      name: http
+      sha256: "87721a4a50b19c7f1d49001e51409bddc46303966ce89a65af4f4e6004896412"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.6.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -466,6 +474,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.4"
+  sqlite_vector:
+    dependency: transitive
+    description:
+      name: sqlite_vector
+      sha256: "9afe64034770c4f1d77b94fe1838bcdcbc3bd3f2422ab1708e3481f89e27989e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.85"
   stack_trace:
     dependency: transitive
     description:

@@ -11,7 +11,7 @@ dependencies:
   bloc: ^9.2.0
   collection: ^1.18.0
   equatable: ^2.0.8
-  fl_chart: ^0.69.0
+  fl_chart: ^1.2.0
   flutter:
     sdk: flutter
   flutter_animate: ^4.5.2

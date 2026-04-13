@@ -25,7 +25,7 @@ dependencies:
     path: packages/kumi_data_sources
   kumi_repository:
     path: packages/kumi_repository
-  lottie: ^3.1.0
+  lottie: ^3.3.3
   lucide_icons: ^0.257.0
   path: ^1.9.0
   path_provider: ^2.1.0
